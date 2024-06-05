@@ -5,7 +5,7 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import { Drawer } from 'expo-router/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props: any) {
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.logoContainer}>
@@ -19,7 +19,7 @@ function CustomDrawerContent(props) {
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>  
         <Drawer.Screen
           name="index"
           options={{

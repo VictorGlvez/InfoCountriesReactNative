@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titulo_introduccion: {
-    fontFamily: 'Patua One',
     fontSize: 24,
     margin: 10,
     color: '#ece5d7',
