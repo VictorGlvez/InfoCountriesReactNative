@@ -1,11 +1,25 @@
+import React from 'react';
+import { View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
 import { Ionicons } from '@expo/vector-icons';
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={styles.logoContainer}>
+        <Image source={require('../assets/logo_infocountries.png')} style={styles.logo} />
+      </View>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
+  );
+}
 
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer>
+      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
         <Drawer.Screen
           name="index"
           options={{
@@ -13,7 +27,7 @@ export default function Layout() {
             title: 'InfoCountries',
             drawerIcon: ({ color, size }) => (
               <Ionicons name="home" size={size} color="black" />
-            )
+            ),
           }}
         />
         <Drawer.Screen
@@ -28,3 +42,15 @@ export default function Layout() {
   );
 }
 
+const styles = StyleSheet.create({
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
+  },
+});

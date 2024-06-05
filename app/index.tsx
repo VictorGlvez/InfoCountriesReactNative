@@ -59,13 +59,11 @@ const styles = StyleSheet.create({
   },
   destacado: {
     fontWeight: 'bold',
-    fontFamily: 'Patua One',
     fontSize: 24,
     margin: 0,
     color: '#ece5d7',
   },
   subtitulo_introduccion: {
-    fontFamily: 'Patua One',
     fontSize: 18,
     margin: 30,
     color: '#ece5d7',
