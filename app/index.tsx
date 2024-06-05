@@ -5,14 +5,14 @@ import { Video } from 'expo-av';
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Video
+      {/* <Video
         source={require('../assets/fondointro.mp4')}
         style={styles.video}
         resizeMode={"cover" as any}
         shouldPlay
         isLooping
         isMuted
-      />
+      /> */}
       <View style={styles.content}>
         <View style={styles.fondo_transparente}>
           <Text style={styles.titulo_introduccion}>Descubre tu próximo</Text>

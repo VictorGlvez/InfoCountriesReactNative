@@ -1,16 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Modal } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { countries } from '../utils/countries.js'
+import { ScrollView } from 'react-native-gesture-handler';
+import { ActivityIndicator } from 'react-native';
 
 export default function Galeria() {
     const [selectedCountry, setSelectedCountry] = useState(null);
-    const [fullScreenImage, setFullScreenImage] = useState(null);
+    const [images, setImages] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const [modalImageUri, setModalImageUri] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
 
+    const APIkey = "s80PZl05y2VQ3IiHUeFEZMEOKvYGaHAngMtqVi0XGkl2zxw77tcHlYln"
 
-    const handleImagePress = (image: any) => {
-        setFullScreenImage(image);
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                setIsLoading(true)
+                if (selectedCountry) {
+                    const imageRequest = await fetch(
+                        `https://api.pexels.com/v1/search?query=${selectedCountry}&per_page=6&page=1`,
+                        {
+                            headers: {
+                                Authorization: APIkey,
+                            },
+                        },
+                    )
+                    const imageData = await imageRequest.json();
+                     setImages(imageData.photos.length ? imageData.photos : []);
+                    setIsLoading(false)
+                }
+            } catch (error) {
+                console.log("Error con las imágenes de pexel:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchImages();
+    }, [selectedCountry]);
+
+    const handleImagePress = (index: number) => {
+        setModalImageUri(images[index].src.portrait);
         setModalVisible(true);
     };
 
@@ -19,39 +54,49 @@ export default function Galeria() {
             source={require('../assets/fondo_galeria_con_filtro.png')}
             style={styles.background}
         >
-            <View style={styles.container}>
-                <Text style={styles.titulo_galeria}>Observa con detalle</Text>
-                <View style={{ width: 200 }}>
-                    <SelectList
-                        setSelected={(val: any) => setSelectedCountry(val)}
-                        data={data}
-                        save="value"
-                        placeholder={"País a buscar"}
-                    />
-                </View>
-
-                <View style={styles.contenedorImagen}>
-                    <TouchableOpacity onPress={() => handleImagePress(require('../assets/galeriaprueba.jpeg'))}>
-                        <Image
-                            source={require('../assets/galeriaprueba.jpeg')}
-                            style={styles.formatoImagen}
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text style={styles.titulo_galeria}>Observa con detalle</Text>
+                    <View style={{ width: 200 }}>
+                        <SelectList
+                            setSelected={(val: any) => setSelectedCountry(val)}
+                            data={countries}
+                            save="value"
+                            placeholder={"País a buscar"}
                         />
-                    </TouchableOpacity>
-                    <Modal
-                        animationType="slide"
-                        visible={modalVisible}
-                        onRequestClose={() => setModalVisible(false)}
-                    >
-                        <View style={styles.modalContainer}>
-                            {fullScreenImage && (
-                            <Image
-                                source={fullScreenImage}
-                            />
+                    </View>
+                    <View style={styles.contenedorImagen}>
+                    {isLoading ? (
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        ) : images === null ? (
+                            <Text></Text>
+                        ) : images.length === 0 ? (
+                            <Text>No hay imágenes disponibles para este país</Text>
+                        ) : (
+                            images.map((image, index) => (
+                                <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+                                    <Image
+                                        source={{ uri: images[index].src.medium }}
+                                        style={styles.formatoImagen}
+                                    />
+                                </TouchableOpacity>
+                            ))
                         )}
-                        </View>
-                    </Modal>
+                        <Modal
+                            animationType="slide"
+                            visible={modalVisible}
+                            onRequestClose={() => setModalVisible(false)}
+                        >
+                            <View style={styles.modalContainer}>
+                                <Image
+                                    source={{ uri: modalImageUri }}
+                                    style={styles.modalImage}
+                                />
+                            </View>
+                        </Modal>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </ImageBackground>
     );
 }
@@ -84,18 +129,13 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        backgroundColor: 'black', // Fondo negro
+        backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    modalImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
+    }
 });
-
-const data = [
-    { key: '1', value: 'Mobiles', disabled: true },
-    { key: '2', value: 'Appliances' },
-    { key: '3', value: 'Cameras' },
-    { key: '4', value: 'Computers', disabled: true },
-    { key: '5', value: 'Vegetables' },
-    { key: '6', value: 'Diary Products' },
-    { key: '7', value: 'Drinks' },
-]
