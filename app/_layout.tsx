@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Foundation } from '@expo/vector-icons';
 
 function CustomDrawerContent(props: any) {
   return (
@@ -30,6 +30,16 @@ export default function Layout() {
             ),
           }}
         />
+        <Drawer.Screen
+          name="galeria"
+          options={{
+            drawerLabel: 'Galería',
+            title: 'Galería de imágenes',
+            drawerIcon: ({ color, size }) => (
+              <Foundation name="photo" size={size} color="black" />
+            ),
+          }}
+          />
         <Drawer.Screen
           name="prueba"
           options={{
