@@ -29,7 +29,7 @@ export default function About() {
                     <Text style={styles.contacto}>
                         Puedes acceder al repositorio de github de este
                         proyecto <Text style={{color: 'blue'}}
-                                       onPress={() => Linking.openURL('https://github.com/JuanValeraDev/InfoCountries')}>aquí</Text>. {"\n"}
+                                       onPress={() => Linking.openURL('https://github.com/VictorGlvez/InfoCountriesReactNative')}>aquí</Text>. {"\n"}
                         Si quieres contactar con nosotros personalmente puedes hacerlo aquí: {"\n"}
                         - Juan Valera: <Text style={{color: 'blue'}}
                                              onPress={() => Linking.openURL('https://github.com/JuanValeraDev')}>Github</Text> {"\n"}
