@@ -1,6 +1,7 @@
 export const compareCountries = async (firstCountry, secondCountry) => {
     const API_URL = 'https://api.openai.com/v1/chat/completions';
     const API_KEY = 'no-key-retrieval';
+    // sk-proj-9MR9G4RnaqEZhaBJNx07T3BlbkFJUFp2F3BdNekM9bDTugs8
 
     try {
         const response = await fetch(API_URL, {
