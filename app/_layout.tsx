@@ -1,6 +1,4 @@
 import React from 'react';
-
-import About from "@/app/About";
 import { View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
@@ -39,6 +37,16 @@ export default function Layout() {
             title: 'Galería de imágenes',
             drawerIcon: ({ color, size }) => (
               <Foundation name="photo" size={size} color="black" />
+            ),
+          }}
+          />
+          <Drawer.Screen
+          name="comparador"
+          options={{
+            drawerLabel: 'Comparador',
+            title: 'Comparador de países',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="information-circle-sharp" size={size} color="black" />
             ),
           }}
           />
