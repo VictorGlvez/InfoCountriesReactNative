@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function prueba() {
+export default function juegobandera() {
   return (
     <View>
-      <Text>prueba</Text>
+      <Text>juegobandera</Text>
     </View>
   )
 }
+

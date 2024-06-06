@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Modal, Alert} from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { countries } from '../utils/countries.js'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -31,11 +31,12 @@ export default function Galeria() {
                         },
                     )
                     const imageData = await imageRequest.json();
-                     setImages(imageData.photos.length ? imageData.photos : []);
+                    setImages(imageData.photos.length ? imageData.photos : []);
                     setIsLoading(false)
                 }
             } catch (error) {
                 console.log("Error con las imágenes de pexel:", error);
+                Alert.alert("Error con la solicitud","Se ha producido un error en el servidor y no podemos mostrate las imágenes. Sentimos las molestias :(")
             } finally {
                 setIsLoading(false);
             }
@@ -44,8 +45,8 @@ export default function Galeria() {
         fetchImages();
     }, [selectedCountry]);
 
-    const handleImagePress = (index: number) => {
-        setModalImageUri(images[index].src.portrait);
+    const handleImagePress = (image) => {
+        setModalImageUri(image.src.portrait);
         setModalVisible(true);
     };
 
@@ -74,9 +75,9 @@ export default function Galeria() {
                             <Text>No hay imágenes disponibles para este país</Text>
                         ) : (
                             images.map((image, index) => (
-                                <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+                                <TouchableOpacity key={index} onPress={() => handleImagePress(image)}>
                                     <Image
-                                        source={{ uri: images[index].src.medium }}
+                                        source={{ uri: image.src.medium }}
                                         style={styles.formatoImagen}
                                     />
                                 </TouchableOpacity>
