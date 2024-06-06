@@ -5,20 +5,20 @@ interface RectanguloProps {
     children: ReactNode;
     backgroundColor: string;
     borderColor: string;
-    textColor: string;
     padding?: number;
     width?: DimensionValue;
     height?: DimensionValue;
+    margin?: number;
 }
 
 export const Rectangulo: React.FC<RectanguloProps> = ({
                                                           children,
                                                           backgroundColor,
                                                           borderColor,
-                                                          textColor,
                                                           padding = 0,
                                                           width = 'auto',
                                                           height = 'auto',
+                                                          margin = 0,
                                                       }) => {
     const divStyle = StyleSheet.create({
         container: {
@@ -26,9 +26,9 @@ export const Rectangulo: React.FC<RectanguloProps> = ({
             height: height,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
-            color: textColor,
             overflow: "hidden",
             padding: padding,
+            margin: margin,
             alignItems: 'center',
             justifyContent: 'space-around',
             borderRadius: 50, // Ajusta este valor según tus necesidades
