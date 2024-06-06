@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
-import { Ionicons, Foundation } from '@expo/vector-icons';
+import { Ionicons, Foundation, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
 function CustomDrawerContent(props: any) {
   return (
@@ -19,7 +19,7 @@ function CustomDrawerContent(props: any) {
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>  
+      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
         <Drawer.Screen
           name="index"
           options={{
@@ -39,8 +39,8 @@ export default function Layout() {
               <Foundation name="photo" size={size} color="black" />
             ),
           }}
-          />
-          <Drawer.Screen
+        />
+        <Drawer.Screen
           name="comparador"
           options={{
             drawerLabel: 'Comparador',
@@ -49,19 +49,32 @@ export default function Layout() {
               <Ionicons name="information-circle-sharp" size={size} color="black" />
             ),
           }}
-          />
-          <Drawer.Screen
-              name="About"
-              options={{
-                  drawerLabel: 'About',
-                  title: 'About',
-              }}
-          />
+        />
         <Drawer.Screen
-          name="prueba"
+          name="juegobandera"
           options={{
-            drawerLabel: 'MiPrueba',
-            title: 'overview de prueba',
+            drawerLabel: 'Juego Bandera',
+            title: 'Juego bandera',
+            drawerIcon: ({ color, size }) => (
+              <FontAwesome name="flag" size={24} color="black" />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="juegocapital"
+          options={{
+            drawerLabel: 'Juego Capital',
+            title: 'Juego capital',
+            drawerIcon: ({ color, size }) => (
+              <FontAwesome5 name="city" size={24} color="black" />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="About"
+          options={{
+            drawerLabel: 'About',
+            title: 'About',
           }}
         />
       </Drawer>

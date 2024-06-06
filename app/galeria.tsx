@@ -45,8 +45,8 @@ export default function Galeria() {
         fetchImages();
     }, [selectedCountry]);
 
-    const handleImagePress = (index: number) => {
-        setModalImageUri(images[index].src.portrait);
+    const handleImagePress = (image) => {
+        setModalImageUri(image.src.portrait);
         setModalVisible(true);
     };
 
@@ -75,9 +75,9 @@ export default function Galeria() {
                             <Text>No hay imágenes disponibles para este país</Text>
                         ) : (
                             images.map((image, index) => (
-                                <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+                                <TouchableOpacity key={index} onPress={() => handleImagePress(image)}>
                                     <Image
-                                        source={{ uri: images[index].src.medium }}
+                                        source={{ uri: image.src.medium }}
                                         style={styles.formatoImagen}
                                     />
                                 </TouchableOpacity>
