@@ -1,8 +1,8 @@
-
-import React, { useContext} from 'react';
+/*
+import React, {ReactNode, useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {MyContext} from '@/app/buscador';
-import {SelectList} from "react-native-dropdown-select-list";
+import RNPickerSelect from 'react-native-picker-select';
 
 const RectanguloBuscador = () => {
     const {handlers, selectData} = useContext(MyContext);
@@ -10,17 +10,18 @@ const RectanguloBuscador = () => {
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
-                {selectData.map((select, index) => (
+                {selectData.map((select: RNPickerSelect, index) => (
                     <View style={styles.row} key={index}>
-                        <View style={{ width: 200 }}>
-                            <SelectList
-                                setSelected={handlers[select.field]}
-                                data={select.options.map(option => ({ label: option.label, value: option.value }))}
-                                save="value"
-                                placeholder={select.field}
-                                inputStyles={styles.inputStyle}
-                                dropdownItemStyles={styles.dropdownStyle}
+                        <View style={styles.column}>
+                            <Text>{select.field}</Text>
+                        </View>
+                        <View style={styles.column}>
+                            <RNPickerSelect
+                                onValueChange={handlers[select.field]}
+                                items={select.options.map(option => ({ label: option.label, value: option.value }))}
+                                style={pickerSelectStyles}
                             />
+
                         </View>
                     </View>
                 ))}
@@ -59,17 +60,19 @@ const styles = StyleSheet.create({
     column: {
         flex: 1,
     },
-    inputStyle:{
-        fontSize: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        color: '#FFF2D8',
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    dropdownStyle: {
-        backgroundColor: '#FFF2D8',
-        color: '#113946',
-    }
 });
 
+const pickerSelectStyles = StyleSheet.create({
 
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderWidth: 0.5,
+        borderColor: 'purple',
+        borderRadius: 8,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+});
+*/
