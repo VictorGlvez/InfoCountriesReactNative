@@ -17,12 +17,12 @@ const fetchData = async () => {
     }
 };
 
-export function correctCountry() {
+export async function correctCountry() {
     const randomIndex = Math.floor(Math.random() * countries.length);
     return countries[randomIndex]
 }
 
-export function options(correctCountryVar) {
+export async function options(correctCountryVar) {
     const otherCountries = countries.filter(country => country.name !== correctCountryVar.name).sort(() => Math.random() - 0.5).slice(0, 2);
     return shuffleArray([...otherCountries, correctCountryVar]);
 }
