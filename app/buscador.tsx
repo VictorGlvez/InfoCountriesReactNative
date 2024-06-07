@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from "react"
-//import {Button, Card, Col, Modal, Row} from "react-bootstrap";
-import RectanguloBuscador from "@/components/RectanguloBuscador";
 import {Rectangulo} from "@/components/Rectangulo";
-import {View, Text, ImageBackground, StyleSheet} from "react-native";
-
-
-//TODO:
-//En el rectanguloBuscador cuando se selecciona una opción no te deja quitarla. También lo suyo sería que se vean
-//de otro color los que estén seleccionados
+import {ImageBackground, StyleSheet, View, Text} from "react-native";
+import RectanguloBuscador from "@/components/RectanguloBuscador";
+import {ScrollView} from "react-native-gesture-handler";
 
 // Contexto para compartir datos entre componentes
 export const MyContext = React.createContext({
@@ -168,7 +163,7 @@ export default function Buscador() {
         // Función para obtener los datos de los países
         const fetchData = async () => {
             // Función para buscar por nombre
-            async function fetchByName(data) {
+            async function fetchByName() {
                 let apiUrl = "https://restcountries.com/v3.1/name/";
 
                 if (filteredData["Nombre"] && filteredData["Nombre"] !== lastSearchedName) {
@@ -185,17 +180,15 @@ export default function Buscador() {
                         setSearchResultsByName([]);
                     }
                 } catch (error) {
-                    console.error("Error al obtener los países en Nombre:", error);
+                    console.error("Error al obtener los países:", error);
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
 
-                const names = data.map(country => ({value: country.name.common, label: country.name.common}));
-                const uniqueNames = getUniqueSorted(names);
-                setCountryNames(uniqueNames);
+
             }
 
             // Función para buscar por moneda
-            async function fetchByCurrency(data) {
+            async function fetchByCurrency() {
                 let apiUrl = "https://restcountries.com/v3.1/currency/";
 
                 if (filteredData["Moneda"] && filteredData["Moneda"] !== lastSearchedCurrency) {
@@ -215,15 +208,11 @@ export default function Buscador() {
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
 
-                const currencies = data.flatMap(country =>
-                    Object.values(country.currencies).map(currency => ({value: currency.name, label: currency.name}))
-                );
-                const uniqueCurrencies = getUniqueSorted(currencies);
-                setCountryCurrencies(uniqueCurrencies);
+
             }
 
             // Función para buscar por idioma
-            async function fetchByLanguage(data) {
+            async function fetchByLanguage() {
                 let apiUrl = "https://restcountries.com/v3.1/lang/";
 
                 if (filteredData["Idioma"] && filteredData["Idioma"] !== lastSearchedLanguage) {
@@ -243,19 +232,11 @@ export default function Buscador() {
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
 
-                const languages = data.flatMap(country => {
-                    if (country) {
-                        return Object.values(country.languages).map(language => ({value: language, label: language}))
-                    } else {
-                        return null
-                    }
-                }).filter(item => item !== null);
-                const uniqueLanguages = getUniqueSorted(languages);
-                setCountryLanguages(uniqueLanguages);
+
             }
 
             // Función para buscar por idioma
-            async function fetchByRegion(data) {
+            async function fetchByRegion() {
                 let apiUrl = "https://restcountries.com/v3.1/region/";
 
                 if (filteredData["Región"] && filteredData["Región"] !== lastSearchedRegion) {
@@ -275,19 +256,10 @@ export default function Buscador() {
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
 
-                const regions = data.flatMap(country => {
-                    if (country) {
-                        return Object.values(country.region).map(region => ({value: region, label: region}))
-                    } else {
-                        return null
-                    }
-                }).filter(item => item !== null);
-                const uniqueRegions = getUniqueSorted(regions);
-                setCountryLanguages(uniqueRegions);
             }
 
 // Función para buscar por subregión
-            async function fetchBySubregion(data) {
+            async function fetchBySubregion() {
                 let apiUrl = "https://restcountries.com/v3.1/subregion/";
 
                 if (filteredData["Subregión"] && filteredData["Subregión"] !== lastSearchedSubregion) {
@@ -306,21 +278,10 @@ export default function Buscador() {
                     console.error("Error al obtener los países:", error);
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
-
-
-                const subregions = data.map(country => {
-                    if (country) {
-                        return {value: country.subregion, label: country.subregion};
-                    } else {
-                        return null;
-                    }
-                }).filter(item => item !== null);
-                const uniqueSubregions = getUniqueSorted(subregions);
-                setCountrySubregions(uniqueSubregions);
             }
 
 // Función para buscar por capital
-            async function fetchByCapital(data) {
+            async function fetchByCapital() {
                 let apiUrl = "https://restcountries.com/v3.1/capital/";
 
                 if (filteredData["Capital"] && filteredData["Capital"] !== lastSearchedCapital) {
@@ -340,78 +301,77 @@ export default function Buscador() {
                     alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
                 }
 
+            }
+
+            try {
+                const response = await fetch("https://restcountries.com/v3.1/all?fields=name,currencies,languages,region,subregion,capital");
+                const data = await response.json();
+                setAllCountries(data)
+                await fetchByName(data);
+                await fetchByCurrency(data);
+                await fetchByLanguage(data);
+                await fetchByRegion(data);
+                await fetchBySubregion(data);
+                await fetchByCapital(data);
+
+                const names = data.map(country => ({value: country.name.common, label: country.name.common}));
+                const uniqueNames = getUniqueSorted(names);
+                setCountryNames(uniqueNames);
+
+                const languages = data.flatMap(country =>
+                    Object.values(country.languages).map(language => ({value: language, label: language}))
+                );
+                const uniqueLanguages = getUniqueSorted(languages);
+                setCountryLanguages(uniqueLanguages);
+
+
+                const currencies = data.flatMap(country =>
+                    Object.values(country.currencies).map(currency => ({value: currency.name, label: currency.name}))
+                );
+                const uniqueCurrencies = getUniqueSorted(currencies);
+                setCountryCurrencies(uniqueCurrencies);
+
+
+                const regions = data.map(country => ({value: country.region, label: country.region}));
+                const uniqueRegions = getUniqueSorted(regions);
+                setCountryRegions(uniqueRegions);
+
+                const subregions = data.map(country => ({value: country.subregion, label: country.subregion}));
+                const uniqueSubregions = getUniqueSorted(subregions);
+                setCountrySubregions(uniqueSubregions);
+
                 const capitals = data.reduce((acc, country) => {
-                    if (country.capital && country.capital[0]) {
+                    if (country.capital[0]) {
                         acc.push({value: country.capital[0], label: country.capital[0]});
                     }
                     return acc;
                 }, []);
                 const uniqueCapitals = getUniqueSorted(capitals);
                 setCountryCapitals(uniqueCapitals);
-            }
 
-            try {
-                const response = await fetch("https://restcountries.com/v3.1/all?fields=name,currencies,languages,region,subregion,capital");
-                const data = await response.json();
-                console.log(data)
-           //     if (data !== undefined) {
-
-                    setAllCountries(data)
-                    await fetchByName(data);
-                    await fetchByCurrency(data);
-                    await fetchByLanguage(data);
-                    await fetchByRegion(data);
-                    await fetchBySubregion(data);
-                    await fetchByCapital(data);
-
-                    const languages = data.flatMap(country =>
-                        Object.values(country.languages).map(language => ({value: language, label: language}))
-                    );
-                    const uniqueLanguages = getUniqueSorted(languages);
-                    setCountryLanguages(uniqueLanguages);
-
-                    const regions = data.map(country => ({value: country.region, label: country.region}));
-                    const uniqueRegions = getUniqueSorted(regions);
-                    setCountryRegions(uniqueRegions);
-
-                    const subregions = data.map(country => ({
-                        value: country.subregion,
-                        label: country.subregion
-                    }));
-                    const uniqueSubregions = getUniqueSorted(subregions);
-                    setCountrySubregions(uniqueSubregions);
-
-                    const capitals = data.reduce((acc, country) => {
-                        if (country.capital[0]) {
-                            acc.push({value: country.capital[0], label: country.capital[0]});
-                        }
-                        return acc;
-                    }, []);
-                    const uniqueCapitals = getUniqueSorted(capitals);
-                    setCountryCapitals(uniqueCapitals);
-              //  }
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
                 alert("Ha ocurrido un error con el servidor. Sentimos las molestias!")
             }
+        };
 
-            // Función para obtener elementos únicos y ordenados
-            const getUniqueSorted = (items) => {
-                const uniqueItems = items.reduce((acc, current) => {
-                    const x = acc.find(item => item.label === current.label);
-                    if (!x) {
-                        return acc.concat([current]);
-                    } else {
-                        return acc;
-                    }
-                }, []);
-                uniqueItems.sort((a, b) => a.label.localeCompare(b.label));
-                return uniqueItems;
-            };
+        // Función para obtener elementos únicos y ordenados
+        const getUniqueSorted = (items) => {
+            const uniqueItems = items.reduce((acc, current) => {
+                const x = acc.find(item => item.label === current.label);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc;
+                }
+            }, []);
+            uniqueItems.sort((a, b) => a.label.localeCompare(b.label));
+            return uniqueItems;
+        };
 
-            fetchData();
-        }
+        fetchData();
     }, [selectedData]);
+
 
     return (
         <ImageBackground
@@ -419,32 +379,34 @@ export default function Buscador() {
             style={styles.background}
         >
             <MyContext.Provider value={{selectData: searchFieldOptions, handlers}}>
-                <RectanguloBuscador/>
-                <View style={styles.container}>
-                    <Rectangulo backgroundColor={"#FDF6EA"} borderColor={"#113946"} textColor={"#113946"}
-                                padding={{padding: "20px"}}>
-                        <Text>Resultados</Text>
-                        <View>
-                            {combinedSearchResults.map((country, index) => (
-                                country["name"] !== undefined &&
-                                country["currencies"] !== undefined &&
-                                country["region"] !== undefined && (
-                                    <View key={index}>
-                                        <Text>{country["name"].common}</Text>
-                                    </View>
-                                )
-                            ))}
-                        </View>
-                    </Rectangulo>
+                <ScrollView>
+
+                    <RectanguloBuscador/>
+                    <View style={styles.container}>
+                        <Rectangulo backgroundColor={"#FDF6EA"} borderColor={"#113946"} textColor={"#113946"}
+                                    padding={{padding: "20px"}}>
+                            <Text>Resultados</Text>
+                            <View>
+                                {combinedSearchResults.map((country, index) => (
+
+                                        <View key={index}>
+                                            <Text>{country["name"].common}</Text>
+                                        </View>
+
+                                ))}
+                            </View>
+                        </Rectangulo>
 
 
-                </View>
+                    </View>
 
+                </ScrollView>
 
             </MyContext.Provider>
         </ImageBackground>
-    )
+    );
 }
+
 
 const styles = StyleSheet.create({
     background: {

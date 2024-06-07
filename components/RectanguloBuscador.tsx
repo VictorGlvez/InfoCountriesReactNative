@@ -64,10 +64,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: '#FFF2D8',
+
         paddingRight: 30, // to ensure the text is never behind the icon
     },
     dropdownStyle: {
         backgroundColor: '#FFF2D8',
+        color: '#113946',
+    },
+    dropdownItemStyle: {
         color: '#113946',
     }
 });
