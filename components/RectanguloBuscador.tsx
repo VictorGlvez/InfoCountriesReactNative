@@ -5,17 +5,17 @@ import {MyContext} from '@/app/buscador';
 import {SelectList} from "react-native-dropdown-select-list";
 
 const RectanguloBuscador = () => {
-    const {handlers, selectData} = useContext(MyContext);
+    const {handleDataChange, selectData} = useContext(MyContext);
 
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
-                {selectData.map((select, index) => (
+                {selectData && selectData.map((select, index) => (
                     <View style={styles.row} key={index}>
                         <View style={{ width: 200 }}>
                             <SelectList
-                                setSelected={handlers[select.field]}
-                                data={select.options.map(option => ({ label: option.label, value: option.value }))}
+                                setSelected={(selectedOption) => handleDataChange(select.field, selectedOption)}
+                                data={select.options}
                                 save="value"
                                 placeholder={select.field}
                                 inputStyles={styles.inputStyle}
