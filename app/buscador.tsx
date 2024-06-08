@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react"
 import {Rectangulo} from "@/components/Rectangulo";
-import {ImageBackground, StyleSheet, View, Text} from "react-native";
+import {ImageBackground, StyleSheet, View, Text, Modal, TouchableOpacity, Image, ActivityIndicator} from "react-native";
 import RectanguloBuscador from "@/components/RectanguloBuscador";
 import {ScrollView} from "react-native-gesture-handler";
+import {Card} from "react-native-elements";
 
 //TODO: cambiar el color del texto en los selectores al escribir
 //TODO: Que se puedan deseleccionar los selectores
@@ -19,6 +20,8 @@ export default function Buscador() {
     const [allCountries, setAllCountries] = useState([]);
     const [countryDetails, setCountryDetails] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [selectedData, setSelectedData] = useState({
         "Nombre": null,
         "Moneda": null,
@@ -44,6 +47,10 @@ export default function Buscador() {
         {field: 'Subregión', options: countrySubregions},
         {field: 'Capital', options: countryCapitals},
     ];
+
+    const Separator = () => (
+        <View style={styles.separator}/>
+    );
 
     let combinedSearchResults = Object.values(selectedData).some(value => value !== null) ? allCountries : [];
 // Iteramos sobre los campos de búsqueda seleccionados
@@ -79,19 +86,20 @@ export default function Buscador() {
     };
 
     const handleCardClick = (country) => {
+        setIsLoading(true)
         fetchCountryDetails(country.name.common).then(() => {
+            setIsLoading(false);
             setShowModal(true);
         });
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
     };
 
     const fetchCountryDetails = async (countryName) => {
         const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
         const data = await response.json();
         setCountryDetails(data[0]);
+    };
+    const handleCloseModal = () => {
+        setShowModal(false);
     };
 
 
@@ -160,22 +168,103 @@ export default function Buscador() {
             source={require('../assets/fondo_buscador_con_filtro.png')}
             style={styles.background}
         >
+            {isLoading && (
+                <View style={styles.loadingCircle}>
+                    <ActivityIndicator size="large" color="#0000ff"/>
+                </View>
+            )}
             <MyContext.Provider value={{searchFieldOptions: searchFieldOptions, handleDataChange: handleDataChange}}>
                 <ScrollView>
 
                     <RectanguloBuscador/>
                     <View style={styles.container}>
                         <Rectangulo backgroundColor={"#FDF6EA"} borderColor={"#113946"} textColor={"#113946"}
-                                    padding={{padding: "20px"}}>
-                            <Text>Resultados</Text>
-                            <View>
+                                    padding={{padding: "20px"}} minWidth={300} minHeight={200} margin={40}>
+                            <Text style={styles.title}>Resultados</Text>
+                            <View style={styles.row}>
                                 {combinedSearchResults.map((country, index) => (
-                                    <View key={index}>
-                                        <Text>{country["name"].common}</Text>
-                                    </View>
+                                    <View style={styles.col}>
+                                        <TouchableOpacity onPress={() => handleCardClick(country)}>
 
+                                            <Card key={index} containerStyle={styles.cardContainer}
+                                            >
+                                                <Card.Title
+                                                    style={styles.cardTitle}>{country["name"].common}</Card.Title>
+                                            </Card>
+                                        </TouchableOpacity>
+
+
+                                    </View>
                                 ))}
                             </View>
+                            <ScrollView>
+
+                                <Modal visible={showModal} onRequestClose={handleCloseModal} animationType="slide">
+                                    <View style={styles.modalContainer}>
+                                        <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
+                                            <Text style={styles.closeButtonText}>X</Text>
+                                        </TouchableOpacity>
+                                        <Text
+                                            style={styles.modalTitle}>{countryDetails ? countryDetails.name.common : ""}</Text>
+                                        <Text style={styles.modalSubtitle}>Bandera</Text>
+                                        {countryDetails && countryDetails.flags ?
+                                            <Image source={{uri: countryDetails.flags.png}}
+                                                   style={styles.modalImage}/> : <Text/>}
+                                        <Separator/>
+                                        <Text style={styles.modalSubtitle}>Información General</Text>
+                                        <Text style={styles.modalStrong}>Nombre
+                                            Oficial: {countryDetails ? countryDetails.name.official : <Text/>}</Text>
+
+                                        <Text style={styles.modalStrong}>Región: </Text>
+                                        <Text >{countryDetails ? countryDetails.region :
+                                            <Text/>}</Text>
+                                        <Text
+                                            style={styles.modalStrong}>Subregión: {countryDetails ? countryDetails.subregion :
+                                            <Text/>}</Text>
+                                        <Text
+                                            style={styles.modalStrong}>Capital: {countryDetails ? countryDetails.capital : ""}</Text>
+                                        <Text style={styles.modalStrong}>Área: {countryDetails ? countryDetails.area :
+                                            <Text/>} km²</Text>
+                                        <Text
+                                            style={styles.modalStrong}>Población: {countryDetails ? countryDetails.population :
+                                            <Text/>}</Text>
+                                        <Separator/>
+                                        <Text style={styles.modalSubtitle}>Moneda</Text>
+                                        {countryDetails && countryDetails.currencies ? Object.values(countryDetails.currencies).map((currency, index) => (
+                                            <Text key={index}>Nombre: {currency.name}, Símbolo: {currency.symbol}</Text>
+                                        )) : <Text/>}
+                                        <Separator/>
+
+                                        <Text style={styles.modalSubtitle}>Idiomas</Text>
+                                        {countryDetails && countryDetails.languages ? Object.values(countryDetails.languages).map((language, index) => (
+                                            <Text key={index}>{language}</Text>
+                                        )) : <Text/>}
+                                        <Separator/>
+
+                                        <Text style={styles.modalSubtitle}>Zonas Horarias</Text>
+                                        {countryDetails && countryDetails.timezones ? countryDetails.timezones.map((timezone, index) => (
+                                            <Text key={index}>{timezone}</Text>
+                                        )) : <Text/>}
+                                        <Separator/>
+
+                                        <Text style={styles.modalSubtitle}>Gentilicios</Text>
+                                        {countryDetails && countryDetails.demonyms ? Object.values(countryDetails.demonyms).map((demonym, index) => (
+                                            <Text key={index}>{demonym.f} / {demonym.m}</Text>
+                                        )) : <Text/>}
+                                        <Separator/>
+
+                                        <Text style={styles.modalSubtitle}>Inicio de la Semana</Text>
+                                        <Text>{countryDetails ? countryDetails.startOfWeek : <Text/>}</Text>
+                                        <Separator/>
+
+                                        <Text style={styles.modalSubtitle}>Escudo</Text>
+                                        {countryDetails && countryDetails.coatOfArms ?
+                                            <Image source={{uri: countryDetails.coatOfArms.png}}
+                                                   style={styles.modalImage}/> : <Text/>}
+                                    </View>
+                                </Modal>
+                            </ScrollView>
+
                         </Rectangulo>
 
 
@@ -217,134 +306,93 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: '#FDF6EA',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#113946',
+    },
+    modalImage: {
+        width: '20%',
+        height: '20%',
+        resizeMode: 'contain',
+    },
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+
+    },
+    col: {
+        flexDirection: 'column',
+    },
+    cardContainer: {
+        backgroundColor: '#113946',
+        color: '#FDF6EA',
+        borderRadius: 10,
+        borderColor: '#FDF6EA',
+        borderWidth: 2,
+        margin: 10,
+    },
+    cardTitle: {
+        color: '#FDF6EA',
+        fontSize: 20,
+        textAlign: 'center',
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    loadingCircle: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.2)', // Puedes cambiar el color y la opacidad a tu gusto
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1, // Asegúrate de que este valor sea mayor que el de cualquier otro elemento
+
+    },
+    separator: {
+        borderBottomColor: 'black',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        marginVertical: 10, // Puedes ajustar este valor para cambiar el espaciado alrededor del separador
+    },
+    modalTitle: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        backgroundColor: '#113946',
+    },
+    modalSubtitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#113946',
+    },
+    modalStrong: {
+        fontWeight: 'bold',
+    },
+
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: '#ccc',
+        borderRadius: 20,
+        width: 40,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    modalImage: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'contain',
-    }
+    closeButtonText: {
+        fontSize: 20,
+        color: '#333',
+    },
+
+
 });
 
-
-{/*
-
-        <MyContext.Provider value={{selectData: searchFieldOptions, handlers}}>
-            <div className={"fondo fondo_buscador pb-5 pb-lg-0 main-content"}>
-                <div className={"d-flex flex-column"}>
-                    <h1 className={"titulo_buscador pt-5 mt-lg-5 mb-5"}>Busca como un profesional</h1>
-                    <Row className={"mb-lg-5  justify-content-center "}>
-                        <Col xs={11} sm={8} lg={6} xl={5} className={"z-2 justify-content-lg-start me-xl-5"}>
-                            <RectanguloBuscador/>
-                        </Col>
-                        <Col xs={11} sm={8} lg={6} xl={5} className={"justify-content-lg-end"}>
-                            <Rectangulo classNames={"rectangulo_buscador_2 container mt-5 mt-lg-0 ms-xl-5 p-sm-4"}
-                                        backgroundColor={"#FFF2D8"}
-                                        borderColor={"#113946"}
-                                        textColor={"#113946"} padding={{padding: "20px"}}>
-                                <h1 className={"m-4"}>Resultados</h1>
-                                <div className={"container"}>
-                                    <Row>
-                                        {
-                                            <>
-                                                {combinedSearchResults.map((country, index) => (
-                                                    country["name"] !== undefined &&
-                                                    country["currencies"] !== undefined &&
-                                                    country["region"] !== undefined && (
-                                                        <Col xs={12} md={6} lg={6} key={index}>
-                                                            <Card key={index} country={country} className="custom-card"
-                                                                  onClick={() => handleCardClick(country)}>
-                                                                <Card.Body className={"custom-card-body text-center"}>
-                                                                    <Card.Title>{country["name"].common}</Card.Title>
-                                                                </Card.Body>
-                                                            </Card>
-                                                        </Col>
-                                                    )
-                                                ))
-                                                }
-                                            </>
-                                        }
-                                    </Row>
-                                    <Modal show={showModal} onHide={handleCloseModal}>
-                                        <Modal.Header closeButton
-                                                      className={"custom-modal-header justify-content-center"}
-                                        >
-                                            <Modal.Title
-                                                className={"fw-bold h1"}>{countryDetails ? countryDetails.name.common.toUpperCase() : ""}</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body className="custom-modal-body text-center">
-                                            <h5>Bandera</h5>
-                                            {countryDetails && countryDetails.flags ?
-                                                <img src={countryDetails.flags.png} alt="Bandera"
-                                                     className={"img-fluid d-block mx-auto"}/> : ""}
-                                            <hr/>
-
-                                            <h5>Información General</h5>
-                                            <p><strong>Nombre
-                                                Oficial:</strong> {countryDetails ? countryDetails.name.official : ""}
-                                            </p>
-                                            <p><strong>Región:</strong> {countryDetails ? countryDetails.region : ""}
-                                            </p>
-                                            <p>
-                                                <strong>Subregión:</strong> {countryDetails ? countryDetails.subregion : ""}
-                                            </p>
-                                            <p>
-                                                <strong>Capital:</strong> {countryDetails ? countryDetails.capital[0] : ""}
-                                            </p>
-                                            <p><strong>Área:</strong> {countryDetails ? countryDetails.area : ""} km²
-                                            </p>
-                                            <p>
-                                                <strong>Población:</strong> {countryDetails ? countryDetails.population : ""}
-                                            </p>
-                                            <hr/>
-                                            <h5>Moneda</h5>
-                                            {countryDetails && countryDetails.currencies ? Object.values(countryDetails.currencies).map((currency, index) => (
-                                                <p key={index}>
-                                                    <strong>Nombre:</strong> {currency.name}, <strong>Símbolo:</strong> {currency.symbol}
-                                                </p>
-                                            )) : ""}
-                                            <hr/>
-                                            <h5>Idiomas</h5>
-                                            {countryDetails && countryDetails.languages ? Object.values(countryDetails.languages).map((language, index) => (
-                                                <p key={index}>{language}</p>
-                                            )) : ""}
-                                            <hr/>
-                                            <h5>Zonas Horarias</h5>
-                                            {countryDetails && countryDetails.timezones ? countryDetails.timezones.map((timezone, index) => (
-                                                <p key={index}>{timezone}</p>
-                                            )) : ""}
-                                            <hr/>
-                                            <h5>Gentilicios</h5>
-                                            {countryDetails && countryDetails.demonyms ? Object.values(countryDetails.demonyms).map((demonym, index) => (
-                                                <p key={index}>{demonym.f} / {demonym.m}</p>
-                                            )) : ""}
-                                            <hr/>
-                                            <h5>Inicio de la Semana</h5>
-                                            <p>{countryDetails ? countryDetails.startOfWeek : ""}</p>
-                                            <hr/>
-                                            <h5>Escudo</h5>
-                                            {countryDetails && countryDetails.coatOfArms ?
-                                                <img src={countryDetails.coatOfArms.png} alt="Escudo"
-                                                     className={"img-fluid d-block mx-auto"}/> : ""}
-
-                                        </Modal.Body>
-                                        <Modal.Footer className={"custom-modal-footer"}>
-                                            <Button variant="warning" onClick={handleCloseModal}>
-                                                Cerrar
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Modal>
-                                </div>
-                            </Rectangulo>
-                        </Col>
-                    </Row>
-                </div>
-            </div>
-        </MyContext.Provider>
-
-    )
-}
-*/
-}

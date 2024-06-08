@@ -19,6 +19,8 @@ export const Rectangulo: React.FC<RectanguloProps> = ({
                                                           width = 'auto',
                                                           height = 'auto',
                                                           margin = 0,
+                                                          minHeight = 'auto',
+                                                          minWidth = 'auto',
                                                       }) => {
     const divStyle = StyleSheet.create({
         container: {
@@ -44,6 +46,8 @@ export const Rectangulo: React.FC<RectanguloProps> = ({
             shadowOpacity: 0.6,
             shadowRadius: 4,
             elevation: 5,
+            minHeight: minHeight,
+            minWidth: minWidth,
         }
     });
     return <View style={divStyle.container}>{children}</View>

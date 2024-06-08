@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 50,
         borderWidth: 5,
+        margin: 40,
     },
     innerContainer: {
         padding: 10,
