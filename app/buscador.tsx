@@ -6,12 +6,13 @@ import {ScrollView} from "react-native-gesture-handler";
 
 //TODO: cambiar el color del texto en los selectores al escribir
 //TODO: Que se puedan deseleccionar los selectores
+//TODO: Poner un loading mientras se cargan los datos
 
 // Contexto para compartir datos entre componentes
 export const MyContext = React.createContext({
     handleDataChange: () => {
     },
-    selectData: []
+    searchFieldOptions: []
 });
 
 export default function Buscador() {
@@ -63,8 +64,6 @@ export default function Buscador() {
                     combinedSearchResults = combinedSearchResults.filter(country => {
                         return country.region === value;
                     });
-                    console.log("DESPUÉS DE REGIÓN: combinedSearchResults", combinedSearchResults)
-
                     break;
                 case "Subregión":
                     combinedSearchResults = combinedSearchResults.filter(country => country.subregion === value);
@@ -77,7 +76,6 @@ export default function Buscador() {
     }
     const handleDataChange = async (field, selectedOption) => {
         await setSelectedData(prevState => ({...prevState, [field]: selectedOption}));
-        console.log("selectedData", selectedData);
     };
 
     const handleCardClick = (country) => {
@@ -162,7 +160,7 @@ export default function Buscador() {
             source={require('../assets/fondo_buscador_con_filtro.png')}
             style={styles.background}
         >
-            <MyContext.Provider value={{selectData: searchFieldOptions, handleDataChange: handleDataChange}}>
+            <MyContext.Provider value={{searchFieldOptions: searchFieldOptions, handleDataChange: handleDataChange}}>
                 <ScrollView>
 
                     <RectanguloBuscador/>
