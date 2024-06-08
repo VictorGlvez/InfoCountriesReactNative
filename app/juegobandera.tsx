@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, Button, Image, TouchableOpacity, Modal, StyleSheet, ImageBackground, Animated } from 'react-native';
-import { Audio } from 'expo-av';
+// import { Audio } from 'expo-av';
 import { correctCountry, options } from '../utils/juego.js';
 import gameMusic from '../assets/audio/game.mp3';
 import correctSound from '../assets/audio/correct.mp3';
@@ -22,9 +22,9 @@ export default function JuegoBandera() {
 
   useEffect(() => {
     loadGame();
-    playBackgroundMusic();
+    // playBackgroundMusic();
     startFlagAnimation();
-    return () => sound && sound.unloadAsync();
+    // return () => sound && sound.unloadAsync();
   }, []);
 
   const loadGame = async () => {
@@ -55,13 +55,11 @@ export default function JuegoBandera() {
     setSelectedButton(option.name);
     if (option.name === correctAnswer.name) {
       setCount(count + 1);
-      if (!isMuted) await playSound(correctSound);
-    } else {
-      if (!isMuted) await playSound(incorrectSound);
     }
-
-
-
+    //   if (!isMuted) await playSound(correctSound);
+    // } else {
+    //   if (!isMuted) await playSound(incorrectSound);
+    // }
     setTimeout(() => {
       setIsSelect(false);
       if (round < 10 && !showModal) {
@@ -73,28 +71,28 @@ export default function JuegoBandera() {
     }, 1200);
   };
 
-  const toggleMute = async () => {
-    setIsMuted(!isMuted);
-    if (sound) {
-      if (isMuted) {
-        await sound.playAsync();
-      } else {
-        await sound.pauseAsync();
-      }
-    }
-  };
+  // const toggleMute = async () => {
+  //   setIsMuted(!isMuted);
+  //   if (sound) {
+  //     if (isMuted) {
+  //       await sound.playAsync();
+  //     } else {
+  //       await sound.pauseAsync();
+  //     }
+  //   }
+  // };
 
-  const playSound = async (soundFile) => {
-    const { sound } = await Audio.Sound.createAsync(soundFile);
-    setSound(sound);
-    await sound.playAsync();
-  };
+  // const playSound = async (soundFile) => {
+  //   const { sound } = await Audio.Sound.createAsync(soundFile);
+  //   setSound(sound);
+  //   await sound.playAsync();
+  // };
 
-  const playBackgroundMusic = async () => {
-    const { sound } = await Audio.Sound.createAsync(gameMusic, { isLooping: true });
-    setSound(sound);
-    if (!isMuted) await sound.playAsync();
-  };
+  // const playBackgroundMusic = async () => {
+  //   const { sound } = await Audio.Sound.createAsync(gameMusic, { isLooping: true });
+  //   setSound(sound);
+  //   if (!isMuted) await sound.playAsync();
+  // };
   Animated.sequence([
     Animated.timing(buttonScale, {
       toValue: 1.2,
@@ -169,9 +167,6 @@ export default function JuegoBandera() {
             ))}
           </View>
         </View>
-        <TouchableOpacity style={styles.soundButton} onPress={toggleMute}>
-          <Ionicons name={isMuted ? 'volume-mute' : 'volume-high'} size={48} color="black" />
-        </TouchableOpacity>
         <Modal
           animationType="slide"
           transparent={true}
@@ -190,6 +185,10 @@ export default function JuegoBandera() {
     </ImageBackground>
   );
 }
+
+{/* <TouchableOpacity style={styles.soundButton} onPress={toggleMute}>
+<Ionicons name={isMuted ? 'volume-mute' : 'volume-high'} size={48} color="black" />
+</TouchableOpacity> */}
 
 const styles = StyleSheet.create({
   background: {
