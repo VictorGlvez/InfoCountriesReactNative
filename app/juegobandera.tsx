@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#113946',
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 30,
     borderColor: "#FDF6EA",
     borderWidth: 5,
     shadowColor: "#000",
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: '#FFF2D8',
-    borderRadius: 20,
+    borderRadius: 30,
     padding: 35,
     borderColor: "black",
     borderWidth: 5,
