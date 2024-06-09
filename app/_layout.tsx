@@ -93,69 +93,6 @@ export default function Layout() {
             </Drawer>
         </GestureHandlerRootView>
     );
-    return (
-        <GestureHandlerRootView style={{flex: 1}}>
-            <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-                <Drawer.Screen
-                    name="index"
-                    options={{
-                        drawerLabel: 'InfoCountries',
-                        title: 'InfoCountries',
-                        drawerIcon: ({color, size}) => (
-                            <Ionicons name="home" size={size} color="black"/>
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="galeria"
-                    options={{
-                        drawerLabel: 'Galería',
-                        title: 'Galería de imágenes',
-                        drawerIcon: ({color, size}) => (
-                            <Foundation name="photo" size={size} color="black"/>
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="comparador"
-                    options={{
-                        drawerLabel: 'Comparador',
-                        title: 'Comparador de países',
-                        drawerIcon: ({color, size}) => (
-                            <Ionicons name="information-circle-sharp" size={size} color="black"/>
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="buscador"
-                    options={{
-                        drawerLabel: 'Buscador',
-                        title: 'Buscador de países',
-                        drawerIcon: ({color, size}) => (
-                            <Ionicons name="people" size={size} color="black"/>
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="about"
-                    options={{
-                        drawerLabel: 'About',
-                        title: 'About',
-                        drawerIcon: ({color, size}) => (
-                            <Ionicons name="people-outline" size={size} color="black"/>
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="prueba"
-                    options={{
-                        drawerLabel: 'MiPrueba',
-                        title: 'overview de prueba',
-                    }}
-                />
-            </Drawer>
-        </GestureHandlerRootView>
-    );
 }
 
 const styles = StyleSheet.create({

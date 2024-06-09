@@ -1,22 +1,23 @@
-
-import React, { useContext} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet} from 'react-native';
 import {MyContext} from '@/app/buscador';
 import {SelectList} from "react-native-dropdown-select-list";
 
 const RectanguloBuscador = () => {
     const {handleDataChange, searchFieldOptions} = useContext(MyContext);
 
+
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
                 {searchFieldOptions && searchFieldOptions.map((select, index) => (
                     <View style={styles.row} key={index}>
-                        <View style={{ width: 200 }}>
+                        <View style={{width: 200}}>
                             <SelectList
-                                setSelected={(selectedOption) => handleDataChange(select.field, selectedOption)}
-                                data={select.options}
+                                setSelected={(selectedOption) => handleDataChange(select.field, selectedOption === select.field ? null : selectedOption)}
+                                data={[select.field, ...select.options]}
                                 save="value"
+                                search={false}
                                 placeholder={select.field}
                                 inputStyles={styles.inputStyle}
                                 dropdownItemStyles={styles.dropdownStyle}
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     column: {
         flex: 1,
     },
-    inputStyle:{
+    inputStyle: {
         fontSize: 20,
         paddingHorizontal: 10,
         paddingVertical: 8,

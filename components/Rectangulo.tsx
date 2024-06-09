@@ -9,6 +9,8 @@ interface RectanguloProps {
     width?: DimensionValue;
     height?: DimensionValue;
     margin?: number;
+    minHeight?: DimensionValue;
+    minWidth?: DimensionValue;
 }
 
 export const Rectangulo: React.FC<RectanguloProps> = ({

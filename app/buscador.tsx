@@ -5,11 +5,7 @@ import RectanguloBuscador from "@/components/RectanguloBuscador";
 import {ScrollView} from "react-native-gesture-handler";
 import {Card} from "react-native-elements";
 
-//TODO: cambiar el color del texto en los selectores al escribir
-//TODO: Que se puedan deseleccionar los selectores
-//TODO: Poner un loading mientras se cargan los datos
 
-// Contexto para compartir datos entre componentes
 export const MyContext = React.createContext({
     handleDataChange: () => {
     },
@@ -38,7 +34,6 @@ export default function Buscador() {
     const [countrySubregions, setCountrySubregions] = useState([]);
     const [countryCapitals, setCountryCapitals] = useState([]);
 
-    // Opciones para los selectores
     const searchFieldOptions = [
         {field: 'Nombre', options: countryNames},
         {field: 'Moneda', options: countryCurrencies},
@@ -53,10 +48,8 @@ export default function Buscador() {
     );
 
     let combinedSearchResults = Object.values(selectedData).some(value => value !== null) ? allCountries : [];
-// Iteramos sobre los campos de búsqueda seleccionados
     for (let [field, value] of Object.entries(selectedData)) {
         if (value) {
-            // Aplicamos el filtro correspondiente a los resultados combinados
             switch (field) {
                 case "Nombre":
                     combinedSearchResults = combinedSearchResults.filter(country => country.name.common === value);
@@ -103,7 +96,6 @@ export default function Buscador() {
     };
 
 
-    // Función para obtener elementos únicos y ordenados
     const getUniqueSorted = (items) => {
         const uniqueItems = items.reduce((acc, current) => {
             const x = acc.find(item => item.label === current.label);
@@ -216,7 +208,7 @@ export default function Buscador() {
                                             Oficial: {countryDetails ? countryDetails.name.official : <Text/>}</Text>
 
                                         <Text style={styles.modalStrong}>Región: </Text>
-                                        <Text >{countryDetails ? countryDetails.region :
+                                        <Text>{countryDetails ? countryDetails.region :
                                             <Text/>}</Text>
                                         <Text
                                             style={styles.modalStrong}>Subregión: {countryDetails ? countryDetails.subregion :
@@ -264,14 +256,9 @@ export default function Buscador() {
                                     </View>
                                 </Modal>
                             </ScrollView>
-
                         </Rectangulo>
-
-
                     </View>
-
                 </ScrollView>
-
             </MyContext.Provider>
         </ImageBackground>
     );
@@ -312,8 +299,9 @@ const styles = StyleSheet.create({
         color: '#113946',
     },
     modalImage: {
-        width: '20%',
-        height: '20%',
+        marginTop: 10,
+        width: '30%',
+        height: '30%',
         resizeMode: 'contain',
     },
     row: {
@@ -350,16 +338,16 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.2)', // Puedes cambiar el color y la opacidad a tu gusto
+        backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1, // Asegúrate de que este valor sea mayor que el de cualquier otro elemento
+        zIndex: 1,
 
     },
     separator: {
         borderBottomColor: 'black',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        marginVertical: 10, // Puedes ajustar este valor para cambiar el espaciado alrededor del separador
+        marginVertical: 10,
     },
     modalTitle: {
         fontSize: 30,
@@ -392,7 +380,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#333',
     },
-
-
 });
 
