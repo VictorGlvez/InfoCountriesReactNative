@@ -35,8 +35,8 @@ export const Rectangulo: React.FC<RectanguloProps> = ({
             margin: margin,
             alignItems: 'center',
             justifyContent: 'space-around',
-            borderRadius: 50, // Ajusta este valor según tus necesidades
-            borderWidth: 5, // 'thick' se traduce aproximadamente a 5px
+            borderRadius: 50,
+            borderWidth: 5,
             borderStyle: 'solid',
             flexDirection: 'column',
             textAlign: 'left',
