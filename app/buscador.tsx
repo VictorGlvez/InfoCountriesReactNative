@@ -187,8 +187,8 @@ export default function Buscador() {
                                     </View>
                                 ))}
                             </View>
-                            <ScrollView>
-                                <Modal visible={showModal} onRequestClose={handleCloseModal} animationType="slide">
+                            <Modal visible={showModal} onRequestClose={handleCloseModal} animationType="slide">
+                                <ScrollView>
                                     <View style={styles.modalContainer}>
                                         <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
                                             <Text style={styles.closeButtonText}>X</Text>
@@ -246,9 +246,13 @@ export default function Buscador() {
                                         <Text>{countryDetails ? countryDetails.startOfWeek : <Text/>}</Text>
                                         <Separator/>
 
+                                        <Text style={styles.modalSubtitle}>Escudo</Text>
+                                        {countryDetails && countryDetails.coatOfArms ?
+                                            <Image source={{uri: countryDetails.coatOfArms.png}}
+                                                   style={styles.modalImage}/> : <Text/>}
                                     </View>
-                                </Modal>
-                            </ScrollView>
+                                </ScrollView>
+                            </Modal>
                         </Rectangulo>
                     </View>
                 </ScrollView>
