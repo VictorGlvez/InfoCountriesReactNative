@@ -5,8 +5,6 @@ import {SelectList} from "react-native-dropdown-select-list";
 
 const RectanguloBuscador = () => {
     const {handleDataChange, searchFieldOptions} = useContext(MyContext);
-
-
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
@@ -66,8 +64,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: '#FFF2D8',
-
-        paddingRight: 30, // to ensure the text is never behind the icon
+        paddingRight: 30,
     },
     dropdownStyle: {
         backgroundColor: '#FFF2D8',

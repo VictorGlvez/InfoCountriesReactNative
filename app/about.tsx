@@ -4,6 +4,9 @@ import {Rectangulo} from "@/components/Rectangulo";
 import {ScrollView} from "react-native-gesture-handler";
 
 export default function About() {
+    const Separator = () => (
+        <View style={styles.separator}/>
+    );
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -41,33 +44,53 @@ export default function About() {
                     <Rectangulo backgroundColor="#113946" borderColor="#FFF2D8" padding={20} margin={20}>
                         <Text style={styles.tituloRectangulo}>FAQs</Text>
                         <Text style={styles.textoRectangulo}>
+                            <Separator/>
                             <Text style={styles.subtituloRectangulo}> ¿Qué tipo de información puedo encontrar sobre
-                                cada país? </Text>{"\n"}
+                                cada país? </Text>{"\n"}{"\n"}
+                            <Separator/>
                             En nuestra página web, puedes encontrar información básica sobre cada país, como su
                             moneda, región y bandera, disponible en el buscador. Además, ofrecemos una galería de
                             imágenes y la opción de comparar dos países en aspectos como política, cultura,
                             gastronomía y
-                            turismo. {"\n"}
+                            turismo.
+                            <Separator/>{"\n"}{"\n"}
+
                             <Text style={styles.subtituloRectangulo}> ¿Puedo utilizar la información de la página para
                                 proyectos académicos o
-                                investigaciones? {"\n"}
-                            </Text>
+                                investigaciones?
+                            </Text>{"\n"}{"\n"}
+                            <Separator/>
+
                             Sí, toda la información es de acceso abierto y está disponible para que la uses como
-                            necesites. {"\n"}
+                            necesites.
+                            <Separator/>{"\n"}{"\n"}
+
                             <Text style={styles.subtituloRectangulo}> ¿Hay algún costo asociado con el uso de la página
-                                web? </Text>{"\n"}
+                                web? </Text>{"\n"}{"\n"}
+                            <Separator/>
+
                             No, la página web es totalmente gratuita. No hay ningún costo por usar ninguna de sus
-                            funciones. {"\n"}
-                            <Text style={styles.subtituloRectangulo}>  ¿Puedo contactar a los creadores de la página para consultas o sugerencias? </Text>{"\n"}
+                            funciones.
+                            <Separator/>{"\n"}{"\n"}
+
+                            <Text style={styles.subtituloRectangulo}> ¿Puedo contactar a los creadores de la página para
+                                consultas o sugerencias? </Text>{"\n"}{"\n"}
+                            <Separator/>
+
                             Sí, los enlaces a nuestros perfiles de GitHub están disponibles en la sección de
                             contacto, justo al
-                            lado de esta sección de FAQs. {"\n"}
-                            <Text style={styles.subtituloRectangulo}>  ¿La página web es accesible desde la web? </Text>{"\n"}
+                            lado de esta sección de FAQs.
+                            <Separator/>{"\n"}{"\n"}
+
+                            <Text style={styles.subtituloRectangulo}> ¿La página web es accesible desde la
+                                web? </Text>{"\n"}{"\n"}
+                            <Separator/>
+
                             Sí, nuestra aplicación móvil es completamente accesible desde la web.
                             Además, hemos desarrollado una versión específica para navegadores utilizando React.
                             Puedes
                             encontrar más detalles y acceder al código en nuestro repositorio de GitHub: <Text
-                            style={{color: 'blue'}}
+                            style={{color: 'white'}}
                             onPress={() => Linking.openURL('https://github.com/JuanValeraDev/InfoCountries')}>aquí</Text>.
                         </Text>
                     </Rectangulo>
@@ -81,7 +104,7 @@ export default function About() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff2d8', // Aquí puedes poner el color que desees
+        backgroundColor: '#fff2d8',
     },
     tituloRectangulo: {
         fontSize: 28,
@@ -111,8 +134,12 @@ const styles = StyleSheet.create({
         margin: 10,
         color: '#113946',
         textAlign: 'center',
-    }
-
+    },
+    separator: {
+        borderBottomColor: 'black',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        marginVertical: 10,
+    },
 })
 
 

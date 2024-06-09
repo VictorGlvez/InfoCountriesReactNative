@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Modal, Alert} from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import { countries } from '../utils/countries.js'
-import { ScrollView } from 'react-native-gesture-handler';
-import { ActivityIndicator } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Modal, Alert} from 'react-native';
+import {SelectList} from 'react-native-dropdown-select-list';
+import {countries} from '../utils/countries.js'
+import {ScrollView} from 'react-native-gesture-handler';
+import {ActivityIndicator} from 'react-native';
 
 export default function Galeria() {
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -36,12 +36,11 @@ export default function Galeria() {
                 }
             } catch (error) {
                 console.log("Error con las imágenes de pexel:", error);
-                Alert.alert("Error con la solicitud","Se ha producido un error en el servidor y no podemos mostrate las imágenes. Sentimos las molestias :(")
+                Alert.alert("Error con la solicitud", "Se ha producido un error en el servidor y no podemos mostrate las imágenes. Sentimos las molestias :(")
             } finally {
                 setIsLoading(false);
             }
         };
-
         fetchImages();
     }, [selectedCountry]);
 
@@ -58,7 +57,7 @@ export default function Galeria() {
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.titulo_galeria}>Observa con detalle</Text>
-                    <View style={{ width: 200 }}>
+                    <View style={{width: 200}}>
                         <SelectList
                             setSelected={(val: any) => setSelectedCountry(val)}
                             data={countries}
@@ -67,8 +66,8 @@ export default function Galeria() {
                         />
                     </View>
                     <View style={styles.contenedorImagen}>
-                    {isLoading ? (
-                            <ActivityIndicator size="large" color="#0000ff" />
+                        {isLoading ? (
+                            <ActivityIndicator size="large" color="#0000ff"/>
                         ) : images === null ? (
                             <Text></Text>
                         ) : images.length === 0 ? (
@@ -77,7 +76,7 @@ export default function Galeria() {
                             images.map((image, index) => (
                                 <TouchableOpacity key={index} onPress={() => handleImagePress(image)}>
                                     <Image
-                                        source={{ uri: image.src.medium }}
+                                        source={{uri: image.src.medium}}
                                         style={styles.formatoImagen}
                                     />
                                 </TouchableOpacity>
@@ -90,7 +89,7 @@ export default function Galeria() {
                         >
                             <View style={styles.modalContainer}>
                                 <Image
-                                    source={{ uri: modalImageUri }}
+                                    source={{uri: modalImageUri}}
                                     style={styles.modalImage}
                                 />
                             </View>

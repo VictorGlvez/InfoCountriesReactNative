@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ImageBackground, TouchableOpacity, Alert } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import { countries } from '../utils/countries.js';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator, ImageBackground, TouchableOpacity, Alert} from 'react-native';
+import {SelectList} from 'react-native-dropdown-select-list';
+import {countries} from '../utils/countries.js';
 import Carousel from 'react-native-reanimated-carousel';
-import { compareCountries } from '../utils/chatgpt.js';
+import {compareCountries} from '../utils/chatgpt.js';
 
 export default function Comparador() {
     const [result, setResult] = useState([]);
@@ -18,7 +18,6 @@ export default function Comparador() {
 
         setLoading(true);
         const answer = await compareCountries(firstCountry, secondCountry);
-        console.log('Answer: ', answer);
         setLoading(false);
         if (answer == null) return Alert.alert('Error en la solicitud', 'Ha ocurrido un error con el servidor. ¡Sentimos las molestias!');
         const finalResult = answer.split('\n\n');
@@ -31,11 +30,11 @@ export default function Comparador() {
         if (secondCountry !== null) {
             setFiltroPrimerPais(countries.filter(x => x.value !== secondCountry))
         } else if (firstCountry !== null) {
-            setFiltroSegundoPais(countries.filter(x => x !== firstCountry))
+            setFiltroSegundoPais(countries.filter(x => x.value !== firstCountry))
         }
     }
 
-    const renderItem = ({ item }: { item: string }) => (
+    const renderItem = ({item}: { item: string }) => (
         <View style={styles.carouselItem}>
             <Text style={styles.resultText}>{item}</Text>
             <Text style={styles.paginacion}>{paginacion}/{result.length}</Text>
@@ -78,7 +77,7 @@ export default function Comparador() {
             </TouchableOpacity>
             <View style={styles.resultContainer}>
                 {loading ? (
-                    <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
+                    <ActivityIndicator size="large" color="#0000ff" style={styles.loader}/>
                 ) : (
                     result.length > 0 && (
                         <Carousel

@@ -36,7 +36,7 @@ export default function Layout() {
                         drawerLabel: 'Buscador',
                         title: 'Buscador de países',
                         drawerIcon: ({color, size}) => (
-                            <FontAwesome name="search" size={24} color="black" />
+                            <FontAwesome name="search" size={24} color="black"/>
                         ),
                     }}
                 />

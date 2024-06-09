@@ -184,13 +184,10 @@ export default function Buscador() {
                                                     style={styles.cardTitle}>{country["name"].common}</Card.Title>
                                             </Card>
                                         </TouchableOpacity>
-
-
                                     </View>
                                 ))}
                             </View>
                             <ScrollView>
-
                                 <Modal visible={showModal} onRequestClose={handleCloseModal} animationType="slide">
                                     <View style={styles.modalContainer}>
                                         <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
@@ -249,10 +246,6 @@ export default function Buscador() {
                                         <Text>{countryDetails ? countryDetails.startOfWeek : <Text/>}</Text>
                                         <Separator/>
 
-                                        <Text style={styles.modalSubtitle}>Escudo</Text>
-                                        {countryDetails && countryDetails.coatOfArms ?
-                                            <Image source={{uri: countryDetails.coatOfArms.png}}
-                                                   style={styles.modalImage}/> : <Text/>}
                                     </View>
                                 </Modal>
                             </ScrollView>
@@ -300,8 +293,8 @@ const styles = StyleSheet.create({
     },
     modalImage: {
         marginTop: 10,
-        width: '30%',
-        height: '30%',
+        width: '20%',
+        height: '20%',
         resizeMode: 'contain',
     },
     row: {
