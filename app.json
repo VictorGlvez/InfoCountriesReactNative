@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "InfoCountriesReactNative",
+    "slug": "InfoCountriesReactNative",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo_infocountries.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/logo_infocountries.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo_infocountries.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.dam.infocountries"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "71b6faac-da22-4370-87bb-272dcafafe17"
+      }
+    }
+  }
+}
