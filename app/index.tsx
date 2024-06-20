@@ -5,7 +5,7 @@ import { Video } from 'expo-av';
 export default function Index() {
   return (
     <ImageBackground
-      source={require('../assets/introduccion.jpg')}
+      source={require('../assets/introduccion4.jpg')}
       style={styles.background}
       imageStyle={{ resizeMode: 'cover' }}
     >
